@@ -1,7 +1,7 @@
 import React from "react";
 import Track from "./Track";
 
-function Tracklist({ tracks }){
+function Tracklist({ tracks = []}){
     return (
         <div>
             {tracks.map((track) => (
