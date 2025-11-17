@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import SearchBar from './components/SearchBar'
 import SearchResults from './components/SearchResults'
-import Tracklist from './components/Tracklist'
-import Track from './components/Track'
 import Playlist from './components/Playlist'
 import './App.css'
 
@@ -16,7 +14,7 @@ function App() {
   ])
   
   // Hardcoded sample data for playlist
-  const [playlistName, setPlaylistName] = useState('My Playlist')
+  const [playlistName, setPlaylistName] = useState('')
   const [playlistTracks, setPlaylistTracks] = useState([
     { id: '5', name: 'LOV3', artist: 'Sik-K ft Bryan Chase, Okasian', album: 'K-FLIP+'},
     { id: '6', name: 'Swim', artist: 'Chase Atlantic', album: 'Chase Atlantic'}
@@ -43,7 +41,8 @@ function App() {
         <Playlist 
           name={playlistName}
           tracks={playlistTracks}
-          onRemove={removeTrack}/>
+          onRemove={removeTrack}
+          setName={setPlaylistName}/>
       </div>
     </>
   )

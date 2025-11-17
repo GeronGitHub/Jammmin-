@@ -1,11 +1,22 @@
 import React from "react";
 import Tracklist from "./Tracklist";
 
-function Playlist({ name, tracks, onRemove }){
+function Playlist({ name, tracks, onRemove, setName }){
+
+    function handleNameChange(event){
+        setName(event.target.value);
+    }
+
     return (
         <div>
-            <h2>{name}</h2>
+            <input 
+                type="text"
+                placeholder="Playlist Name..."
+                value={name}
+                onChange={handleNameChange} />
+
             <Tracklist tracks={tracks} onRemove={onRemove}/>
+
             <button>SAVE TO SPOTIFY</button>
         </div>
     )
