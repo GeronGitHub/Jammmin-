@@ -1,12 +1,12 @@
 import React from "react";
 
-function Track({ track, onAdd}){
+function Track({ track, onAdd, onRemove}){
     return (
         <div>
-            <p><strong>{track.name}</strong> - {track.artist} &#124; {track.album}</p>
-            {onAdd && (
-                <button onClick={() => onAdd(track)}>+</button>
-            )}
+            <p><strong>{track.name}</strong> - {track.artist} &#124; <i>{track.album}</i></p>
+            
+            {onAdd && <button onClick={() => onAdd(track)}>+</button>}
+            {onRemove && <button onClick={() => onRemove(track)}>-</button>}
         </div>
     )
 }

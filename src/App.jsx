@@ -29,6 +29,11 @@ function App() {
     }
   }
 
+  function removeTrack(track) {
+    // Function to remove a track from the playlist
+    setPlaylistTracks(prevTracks => prevTracks.filter(t => t.id !== track.id))
+  }
+
   return (
     <>
       <h1>Jammmin'</h1>
@@ -37,7 +42,8 @@ function App() {
         <SearchResults tracks={searchResults} onAdd={addTrack}/>
         <Playlist 
           name={playlistName}
-          tracks={playlistTracks}/>
+          tracks={playlistTracks}
+          onRemove={removeTrack}/>
       </div>
     </>
   )
