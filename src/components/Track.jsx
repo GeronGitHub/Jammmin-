@@ -1,9 +1,12 @@
 import React from "react";
 
-function Track(){
+function Track({ name, artist, album}){
     return (
         <div>
-            <p>Track name - Artist Name</p>
+            <p>
+                <strong>{name}</strong> - {artist} &#40;{album}&#41;
+            </p>
+            <button>+</button>
         </div>
     )
 }

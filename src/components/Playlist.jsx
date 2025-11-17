@@ -6,7 +6,7 @@ function Playlist(){
         <div>
             <h2>My Playlist</h2>
             <button>SAVE TO SPOTIFY</button>
-            <Tracklist />
+            <Tracklist tracks={[]}/>
         </div>
     )
 }
