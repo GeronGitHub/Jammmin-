@@ -14,19 +14,27 @@ function App() {
     { id: '3', name: 'Kiss Me Right', artist: 'Keshi', album: 'Requiem (Bonus Edition)'}, 
     { id: '4', name: 'Yukon', artist: 'Justin Bieber', album: 'SWAG'}, 
   ])
-
+  
+  // Hardcoded sample data for playlist
   const [playlistName, setPlaylistName] = useState('My Playlist')
   const [playlistTracks, setPlaylistTracks] = useState([
     { id: '5', name: 'LOV3', artist: 'Sik-K ft Bryan Chase, Okasian', album: 'K-FLIP+'},
     { id: '6', name: 'Swim', artist: 'Chase Atlantic', album: 'Chase Atlantic'}
   ])
 
+  function addTrack(track) {
+    // Function to add a track to the playlist
+    if (!playlistTracks.find(t => t.id === track.id)){
+      setPlaylistTracks(prevTracks => [...prevTracks, track])
+    }
+  }
+
   return (
     <>
       <h1>Jammmin'</h1>
       <SearchBar />
       <div>
-        <SearchResults tracks={searchResults}/>
+        <SearchResults tracks={searchResults} onAdd={addTrack}/>
         <Playlist 
           name={playlistName}
           tracks={playlistTracks}/>

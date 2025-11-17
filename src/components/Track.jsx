@@ -1,12 +1,12 @@
 import React from "react";
 
-function Track({ name, artist, album}){
+function Track({ track, onAdd}){
     return (
         <div>
-            <p>
-                <strong>{name}</strong> - {artist} &#40;{album}&#41;
-            </p>
-            <button>+</button>
+            <p><strong>{track.name}</strong> - {track.artist} &#124; {track.album}</p>
+            {onAdd && (
+                <button onClick={() => onAdd(track)}>+</button>
+            )}
         </div>
     )
 }

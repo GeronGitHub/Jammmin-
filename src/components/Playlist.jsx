@@ -1,7 +1,7 @@
 import React from "react";
 import Tracklist from "./Tracklist";
 
-function Playlist({ name, tracks}){
+function Playlist({ name, tracks }){
     return (
         <div>
             <h2>{name}</h2>
