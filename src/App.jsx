@@ -1,10 +1,27 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import SearchBar from './components/SearchBar'
 import SearchResults from './components/SearchResults'
 import Playlist from './components/Playlist'
+import { redirectToSpotifyAuth, exchangeCodeForToken } from './util/SpotifyAuth'
 import './App.css'
 
 function App() {
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+
+    if (code) {
+      exchangeCodeForToken(code).then(() => {
+        window.history.replaceState({}, null, '/'); // clean URL
+      });
+    } else {
+      const token = localStorage.getItem('spotify_access_token');
+      if (!token) redirectToSpotifyAuth();
+    }
+  }, []);
+
+
   // Hardcoded sample data for search results
   const [searchResults, setSearchResults] = useState([
     { id: '1', name: 'Go', artist: 'Karri ft Kehlani', album: 'Single'}, 
