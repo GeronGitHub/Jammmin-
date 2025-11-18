@@ -32,6 +32,19 @@ function App() {
     setPlaylistTracks(prevTracks => prevTracks.filter(t => t.id !== track.id))
   }
 
+  function savePlaylist(){
+    // Function to save the playlist to Spotify
+    const trackURIs = playlistTracks.map(track => track.uri);
+
+    // Mock logic to simulate saving the playlist to Spotify
+    console.log("Saving playlist with URIs:", trackURIs);
+    alert("Saving playlist with URIs:", trackURIs)
+
+    // Clear out the playlist after saving
+    setPlaylistName('');
+    setPlaylistTracks([]);
+  }
+
   return (
     <>
       <h1>Jammmin'</h1>
@@ -42,7 +55,8 @@ function App() {
           name={playlistName}
           tracks={playlistTracks}
           onRemove={removeTrack}
-          setName={setPlaylistName}/>
+          setName={setPlaylistName}
+          onSave={savePlaylist}/>
       </div>
     </>
   )

@@ -1,7 +1,7 @@
 import React from "react";
 import Tracklist from "./Tracklist";
 
-function Playlist({ name, tracks, onRemove, setName }){
+function Playlist({ name, tracks, onRemove, setName, onSave }){
 
     function handleNameChange(event){
         setName(event.target.value);
@@ -17,7 +17,7 @@ function Playlist({ name, tracks, onRemove, setName }){
 
             <Tracklist tracks={tracks} onRemove={onRemove}/>
 
-            <button>SAVE TO SPOTIFY</button>
+            <button onClick={onSave}>SAVE TO SPOTIFY</button>
         </div>
     )
 }
