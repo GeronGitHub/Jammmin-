@@ -86,18 +86,63 @@ function App() {
     setPlaylistTracks(prevTracks => prevTracks.filter(t => t.id !== track.id))
   }
 
-  function savePlaylist(){
-    // Function to save the playlist to Spotify
+  async function savePlaylist() {
+  const token = safeGetStorageItem('spotify_access_token');
+  if (!token) {
+    console.error('No Spotify token found, redirecting...');
+    redirectToSpotifyAuth();
+    return;
+  }
+
+  if (!playlistName || playlistTracks.length === 0) {
+    alert('Please enter a playlist name and add at least one track.');
+    return;
+  }
+
+  try {
+    // Get current user's Spotify ID
+    const userResponse = await fetch('https://api.spotify.com/v1/me', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    const userData = await userResponse.json();
+    const userId = userData.id;
+
+    // Create a new playlist
+    const createResponse = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: playlistName,
+        description: 'Created with Jammmin\'',
+        public: true
+      })
+    });
+    const playlistData = await createResponse.json();
+    const playlistId = playlistData.id;
+
+    // Add tracks to the playlist
     const trackURIs = playlistTracks.map(track => track.uri);
+    await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ uris: trackURIs })
+    });
 
-    // Mock logic to simulate saving the playlist to Spotify
-    console.log("Saving playlist with URIs:", trackURIs);
-    alert("Saving playlist with URIs:", trackURIs)
-
-    // Clear out the playlist after saving
+    alert(`Playlist "${playlistName}" saved to Spotify!`);
     setPlaylistName('');
     setPlaylistTracks([]);
+
+  } catch (err) {
+    console.error('Error saving playlist:', err);
   }
+}
+
 
   return (
     <>
