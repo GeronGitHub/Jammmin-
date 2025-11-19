@@ -1,16 +1,46 @@
-# React + Vite
+# Jammmin'
+Jammmin' is a **React web application** that allows users to **search for songs that are on Spotify**, **create a custom playlist**, and then **save them directly to their own Spotify account!** The app demonstrates working with the **Spotify Web API**, **OAuth 2.0 Authentication (PKCE flow)**, and **React state management**.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Features
 
-Currently, two official plugins are available:
+- ***Search Spotify tracks***: Look up songs or artists using Spotify's search API.
+- ***Create Custom Playlists***: Add tracks to a custom playlist.
+- ***Save to Spotify***: Save your custom-made playlist directly to your own Spotify account.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Demo
+![alt text](src/assets/image-2.png)
+![Image showing the search results of "Justin Bieber"](src/assets/image.png)
+![alt text](src/assets/image-3.png)
+![alt text](src/assets/image-4.png)
 
-## React Compiler
+### Technologies Used
+- **React**
+- **Vite**
+- **Spotify Web API**
+- **OAuth 2.0 (PKCE flow)**
+- **JavaScript**
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Installation
+1. Clone the repository:
+    - git clone https://github.com/GeronGitHub/Jammmin-
+    - cd Jammmin-
+2. Install dependencies:
+    - npm install
+3. Start the development server:
+    - npm run dev -- --host 127.0.0.1 --port 5173
 
-## Expanding the ESLint configuration
+### Usage
+1. Open the app in your browser
+2. Search for your favourite songs or artists
+3. Add (or remove) tracks from a custom playlist
+4. Click **Save to Spotify** to add the playlist to your Spotify account.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+### Future Improvements
+- Enhance the UI with CSS to make the app more visually appealing and user-friendly.
+- Add responsive design for mobile devices.
+- Add functionality to playback the track before adding it to the playlist.
+
+### Acknowledgement
+- Spotify Web API Documentation
+- Codecademy Full-Stack Engineer Career Path
