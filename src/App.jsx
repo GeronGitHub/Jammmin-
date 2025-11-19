@@ -5,6 +5,16 @@ import Playlist from './components/Playlist'
 import { redirectToSpotifyAuth, exchangeCodeForToken } from './util/SpotifyAuth'
 import './App.css'
 
+function safeGetStorageItem(key) {
+  try {
+    if (typeof window === 'undefined' || !window.localStorage) return null;
+    return window.localStorage.getItem(key);
+  } catch (err) {
+    console.warn('localStorage unavailable:', err);
+    return null;
+  }
+}
+
 function App() {
 
   useEffect(() => {
@@ -12,30 +22,57 @@ function App() {
     const code = urlParams.get('code');
 
     if (code) {
-      exchangeCodeForToken(code).then(() => {
-        window.history.replaceState({}, null, '/'); // clean URL
-      });
+      (async () => {
+        try {
+          await exchangeCodeForToken(code);
+          window.history.replaceState({}, null, '/'); // clean URL
+        } catch (err) {
+          console.error('Token exchange failed:', err);
+        }
+      })();
     } else {
-      const token = localStorage.getItem('spotify_access_token');
+      const token = safeGetStorageItem('spotify_access_token');
       if (!token) redirectToSpotifyAuth();
     }
   }, []);
 
-
-  // Hardcoded sample data for search results
-  const [searchResults, setSearchResults] = useState([
-    { id: '1', name: 'Go', artist: 'Karri ft Kehlani', album: 'Single'}, 
-    { id: '2', name: 'Headlines', artist: 'Drake', album: 'Take Care (Deluxe)'}, 
-    { id: '3', name: 'Kiss Me Right', artist: 'Keshi', album: 'Requiem (Bonus Edition)'}, 
-    { id: '4', name: 'Yukon', artist: 'Justin Bieber', album: 'SWAG'}, 
-  ])
-  
-  // Hardcoded sample data for playlist
+  const [searchResults, setSearchResults] = useState([])
   const [playlistName, setPlaylistName] = useState('')
-  const [playlistTracks, setPlaylistTracks] = useState([
-    { id: '5', name: 'LOV3', artist: 'Sik-K ft Bryan Chase, Okasian', album: 'K-FLIP+'},
-    { id: '6', name: 'Swim', artist: 'Chase Atlantic', album: 'Chase Atlantic'}
-  ])
+  const [playlistTracks, setPlaylistTracks] = useState([])
+
+  async function searchTracks(query){
+    const token = safeGetStorageItem('spotify_access_token');
+    if (!token){
+      console.error("No Spotify token found");
+      return;
+    }
+
+    try {
+      const endpoint = `https://api.spotify.com/v1/search?type=track&q=${encodeURIComponent(query)}`;
+      const response = await fetch(endpoint, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      if (!response.ok){
+        console.error("Search failed:", await response.text());
+        return;
+      }
+
+      const data = await response.json();
+      const items = (data && data.tracks && data.tracks.items) || [];
+      const tracks = items.map(track => ({
+        id: track.id,
+        name: track.name,
+        artist: track.artists?.[0]?.name || 'Unknown Artist',
+        album: track.album?.name || 'Unknown Album',
+        uri: track.uri
+      }));
+
+      setSearchResults(tracks);
+    } catch (err) {
+      console.error('Search error:', err);
+    }
+  }
 
   function addTrack(track) {
     // Function to add a track to the playlist
@@ -65,7 +102,7 @@ function App() {
   return (
     <>
       <h1>Jammmin'</h1>
-      <SearchBar />
+      <SearchBar onSearch={searchTracks}/>
       <div>
         <SearchResults tracks={searchResults} onAdd={addTrack}/>
         <Playlist 

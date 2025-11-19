@@ -24,6 +24,10 @@ export async function redirectToSpotifyAuth() {
 export async function exchangeCodeForToken(code) {
   const verifier = localStorage.getItem('pkce_verifier');
 
+  if (!verifier) {
+    throw new Error('Missing PKCE verifier - cannot exchange code for token');
+  }
+
   const body = new URLSearchParams({
     client_id: clientID,
     grant_type: 'authorization_code',
@@ -41,6 +45,10 @@ export async function exchangeCodeForToken(code) {
   });
 
   const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(`Token exchange failed: ${data.error_description || response.statusText}`);
+  }
   // data.access_token contains your Spotify token
   localStorage.setItem('spotify_access_token', data.access_token);
   return data.access_token;
